@@ -1,8 +1,9 @@
-﻿// lb1.cpp : Определяет точку входа для приложения.
+// lb1.cpp : Определяет точку входа для приложения.
 //
 
 #include "framework.h"
 #include "lb1.h"
+#include <math.h>
 
 #define MAX_LOADSTRING 100
 
@@ -152,54 +153,112 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             POINT My_Massiv[3];
             // TODO: Добавьте сюда любой код прорисовки, использующий HDC...
             
-            //Корпус
-
-                //первая линия
-            MoveToEx(hdc, 200, 150, NULL);
-            LineTo(hdc, 500, 40);
-
-                //вторая линия
-            MoveToEx(hdc, 200, 150, NULL);
-            LineTo(hdc, 500, 260);
-
-                //Третья линия
-            MoveToEx(hdc, 500, 260, NULL);
-            LineTo(hdc, 800, 80);
-
-                //Четвертая линия
-            MoveToEx(hdc, 500, 40, NULL);
-            LineTo(hdc, 800, 200);
-
-            //Хвост
-
-                //Первая линия
-            MoveToEx(hdc, 800, 200, NULL);
-            LineTo(hdc, 780, 140);
-
-                //Вторая линия
-            MoveToEx(hdc, 800, 80, NULL);
-            LineTo(hdc, 780, 140);
-
-            //Глаз
-
-                //Отрезок глаза
-            MoveToEx(hdc, 300, 114, NULL);
-            LineTo(hdc, 300, 188);
-
-                //Треугольник
-
-                    //Первая линия
-            MoveToEx(hdc, 245, 152, NULL);
-            LineTo(hdc, 256, 141);
-
-                   //Вторая линия
-            MoveToEx(hdc, 245, 152, NULL);
-            LineTo(hdc, 256, 152);
+           const int rows = 28, cols = 3;
+           int arr_xy[rows][cols] = { {200, 200, 1}, {100, 200, 1}, {200, 200, 1}, {200, 300, 1}, {100, 200, 1}, {100, 300, 1}, {100, 300, 1}, {200, 300, 1}, {150, 200, 1}, {150, 210, 1}, {200, 250, 1}, {190, 250, 1}, {150, 300, 1}, {150, 290, 1}, {100, 250, 1}, {110, 250, 1}, {150, 250, 1}, {170, 230, 1}, {170, 230, 1}, {160, 245, 1}, {150, 250, 1}, {160, 245, 1}, {150, 250, 1}, {160, 265, 1}, {160, 265, 1}, {150, 255, 1}, {150, 255, 1}, {150, 250, 1} };
             
-                    //Третья линия
-            MoveToEx(hdc, 256, 141, NULL);
-            LineTo(hdc, 256, 152);
+            for (int i = 0; i < rows; i += 2) {
+
+                MoveToEx(hdc, arr_xy[i][0], arr_xy[i][1], NULL);
+                LineTo(hdc, arr_xy[i + 1][0], arr_xy[i + 1][1]);
+
+            }
+
+            //Задание №1
+            double x = 2.4;
+            double y = 1.5;
+
+            int afmat[3][3] = { {static_cast<int>(x), 0, 0}, {0, static_cast<int>(y), 0}, {0, 0, 1} };
+           
             
+            int** res = new int*[rows];
+            for (int i = 0; i < rows; i++) {
+                res[i] = new int[cols];
+            }
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    res[i][j] = 0;
+                }
+            }
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < 3; j++) {
+                    for (int k = 0; k < 3; k++) {
+                        res[i][j] += arr_xy[i][k] * afmat[k][j];
+                    }
+                }
+            }
+
+            for (int i = 0; i < rows; i += 2) {
+
+                MoveToEx(hdc, res[i][0], res[i][1], NULL);
+                LineTo(hdc, res[i + 1][0], res[i + 1][1]);
+
+            }
+
+            //Задание №2
+         
+
+            int afmat1[3][3] = { {0, 1, 0}, {1, 0, 0}, {0, 0, 1} };
+
+
+            int** res1 = new int* [rows];
+            for (int i = 0; i < rows; i++) {
+                res1[i] = new int[cols];
+            }
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    res1[i][j] = 0;
+                }
+            }
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < 3; j++) {
+                    for (int k = 0; k < 3; k++) {
+                        res1[i][j] += arr_xy[i][k] * afmat1[k][j];
+                    }
+                }
+            }
+
+            for (int i = 0; i < rows; i += 2) {
+
+                MoveToEx(hdc, res1[i][0], res1[i][1], NULL);
+                LineTo(hdc, res1[i + 1][0], res1[i + 1][1]);
+
+            }
+
+            //Задание №3
+            int t = 180;
+
+            int afmat2[3][3] = { { static_cast<int>(cos(t)), static_cast<int>(sin(t)), 0}, { -static_cast<int>(sin(t)), static_cast<int>(cos(t)), 0}, {0, 0, 1} };
+
+
+            int** res2 = new int* [rows];
+            for (int i = 0; i < rows; i++) {
+                res2[i] = new int[cols];
+            }
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    res2[i][j] = 0;
+                }
+            }
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < 3; j++) {
+                    for (int k = 0; k < 3; k++) {
+                        res2[i][j] += arr_xy[i][k] * afmat2[k][j];
+                    }
+                }
+            }
+
+            for (int i = 0; i < rows; i += 2) {
+
+                MoveToEx(hdc, res2[i][0], res2[i][1], NULL);
+                LineTo(hdc, res2[i + 1][0], res2[i + 1][1]);
+
+            }
 
             ValidateRect(hWnd, NULL);
             EndPaint(hWnd, &ps);
